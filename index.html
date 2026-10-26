@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyBizTools.my | Malaysian Business & Document Utility Suite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .ad-slot {
+      background: repeating-linear-gradient(45deg, #f8fafc, #f8fafc 10px, #f1f5f9 10px, #f1f5f9 20px);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showDashboard()">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-sm">M</div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-lg tracking-tight text-slate-900">MyBizTools<span class="text-blue-600">.my</span></span>
+            <span class="text-[11px] font-semibold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200" id="planBadge">Free Tier</span>
+          </div>
+          <p class="text-xs text-slate-500 hidden sm:block">Fast, Browser-Based Business & Document Utilities</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button onclick="toggleAdFreeSimulation()" id="simToggleBtn"
+          class="text-xs px-3 py-1.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 font-medium transition">
+          🛠️ Dev: Ads ON
+        </button>
+
+        <button onclick="openModal('securityModal')" class="text-sm text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition flex items-center space-x-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span class="hidden md:inline">FAQ & Privacy</span>
+        </button>
+
+        <button id="removeAdsBtn" onclick="openModal('stripeModal')"
+          class="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg shadow-sm transition flex items-center space-x-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+          <span>Remove Ads (RM 25)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOP BANNER AD SLOT -->
+  <div class="ad-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+    <div class="ad-slot border border-dashed border-slate-300 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500">
+      <div class="flex items-center space-x-2">
+        <span class="px-1.5 py-0.5 bg-slate-200 text-slate-600 rounded font-semibold uppercase text-[10px]">Ad</span>
+        <span>Sponsor Banner Slot (728x90) — Keeps MyBizTools.my free to use.</span>
+      </div>
+      <button onclick="openModal('stripeModal')" class="text-blue-600 hover:underline font-medium text-left sm:text-right">Hide all ads forever (RM 25 one-time)</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <div class="flex flex-col lg:flex-row gap-8">
+
+      <!-- WORKSPACE COLUMN -->
+      <div class="flex-1">
+
+        <!-- VIEW 1: ICON DASHBOARD -->
+        <div id="dashboardView">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h1 class="text-2xl font-bold text-slate-900">Business Utility Workspace</h1>
+              <p class="text-sm text-slate-600 flex items-center gap-1.5 mt-0.5">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>Processed locally in your browser. Zero external server storage.</span>
+                <button onclick="openModal('securityModal')" class="text-slate-400 hover:text-blue-600 inline-flex items-center" title="Learn how local browser memory works">
+                  <i data-lucide="info" class="w-4 h-4"></i>
+                </button>
+              </p>
+            </div>
+
+            <div class="relative w-full sm:w-64">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input type="text" id="toolSearch" oninput="filterTools()" placeholder="Search tools (e.g. SST, PDF)..."
+                class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <!-- CATEGORY A: MALAYSIAN BUSINESS & SALES TOOLS -->
+          <div class="mb-8">
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Malaysian Business & Sales Tools</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div onclick="openToolWorkspace('sales-report')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="sales report generator excel csv sst myr chart">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+                  <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-semibold text-slate-900 group-hover:text-blue-600 transition">Create Sales Report</h3>
+                    <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">MYR / SST</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Manual input or CSV/Excel upload to clean PDF summary & charts.</p>
+                </div>
+              </div>
+
+              <div onclick="openToolWorkspace('sst-calculator')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="sst tax profit margin calculator malaysia 6% 8%">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition">
+                  <i data-lucide="calculator" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 group-hover:text-emerald-600 transition">SST & Margin Calculator</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Instant 6% / 8% SST inclusive & exclusive pricing + gross margin.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CATEGORY B: DOCUMENT & PDF UTILITIES -->
+          <div class="mb-8">
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Core Document & PDF Utilities</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div onclick="openToolWorkspace('merge-pdf')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="merge pdf combine join">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition">
+                  <i data-lucide="files" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 group-hover:text-indigo-600 transition">Merge PDF</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Combine multiple PDFs into one organized document in seconds.</p>
+                </div>
+              </div>
+
+              <div onclick="openToolWorkspace('split-pdf')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="split extract pdf pages">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition">
+                  <i data-lucide="scissors" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 group-hover:text-purple-600 transition">Split / Extract PDF</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pull specific pages out of a PDF report or split into separate files.</p>
+                </div>
+              </div>
+
+              <div onclick="openToolWorkspace('word-to-pdf')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="convert word to pdf docx">
+                <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 group-hover:bg-sky-600 group-hover:text-white transition">
+                  <i data-lucide="file-text" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 group-hover:text-sky-600 transition">Word to PDF</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Convert .docx documents into standard PDF format effortlessly.</p>
+                </div>
+              </div>
+
+              <div onclick="openToolWorkspace('pdf-to-word')"
+                class="tool-card group bg-white p-5 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md transition cursor-pointer flex items-start space-x-4"
+                data-name="convert pdf to word editable docx">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition">
+                  <i data-lucide="file-edit" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 group-hover:text-amber-600 transition">PDF to Word</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Turn PDF files back into editable Word (.docx) documents.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CATEGORY C: PHASE 2 VOTE CARDS -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Coming Soon — Tap to Vote Next Tool</h2>
+              </div>
+              <span class="text-xs text-slate-400" id="voteFeedback">Help us prioritize Phase 2</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+              <button onclick="voteTool('Invoice & Quotation Maker')" class="tool-card text-left bg-slate-100/80 hover:bg-white p-4 rounded-xl border border-dashed border-slate-300 transition flex items-center justify-between" data-name="invoice quotation">
+                <div>
+                  <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">Phase 2</span>
+                  <h4 class="font-medium text-sm text-slate-700 mt-1">Invoice & Quotation</h4>
+                </div>
+                <i data-lucide="thumbs-up" class="w-4 h-4 text-slate-400"></i>
+              </button>
+
+              <button onclick="voteTool('Payment Voucher Maker')" class="tool-card text-left bg-slate-100/80 hover:bg-white p-4 rounded-xl border border-dashed border-slate-300 transition flex items-center justify-between" data-name="payment voucher receipt">
+                <div>
+                  <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">Phase 2</span>
+                  <h4 class="font-medium text-sm text-slate-700 mt-1">Payment Voucher</h4>
+                </div>
+                <i data-lucide="thumbs-up" class="w-4 h-4 text-slate-400"></i>
+              </button>
+
+              <button onclick="voteTool('Compress PDF')" class="tool-card text-left bg-slate-100/80 hover:bg-white p-4 rounded-xl border border-dashed border-slate-300 transition flex items-center justify-between" data-name="compress shrink pdf">
+                <div>
+                  <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">Phase 2</span>
+                  <h4 class="font-medium text-sm text-slate-700 mt-1">Compress PDF</h4>
+                </div>
+                <i data-lucide="thumbs-up" class="w-4 h-4 text-slate-400"></i>
+              </button>
+
+              <button onclick="voteTool('Sign & Chop PDF')" class="tool-card text-left bg-slate-100/80 hover:bg-white p-4 rounded-xl border border-dashed border-slate-300 transition flex items-center justify-between" data-name="sign watermark stamp pdf">
+                <div>
+                  <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">Phase 2</span>
+                  <h4 class="font-medium text-sm text-slate-700 mt-1">Sign & Chop PDF</h4>
+                </div>
+                <i data-lucide="thumbs-up" class="w-4 h-4 text-slate-400"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: DYNAMIC TOOL WORKSPACE CONTAINER -->
+        <div id="toolWorkspaceView" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <button onclick="showDashboard()" class="text-xs font-medium text-slate-500 hover:text-slate-900 flex items-center space-x-1 mb-4">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to All Tools</span>
+          </button>
+          <h2 id="activeToolTitle" class="text-xl font-bold text-slate-900">Tool Name</h2>
+          <p id="activeToolDesc" class="text-sm text-slate-500 mt-1 mb-6">Tool description.</p>
+
+          <!-- Dynamic Module Slot -->
+          <div id="toolModuleContainer" class="border-2 border-dashed border-slate-300 rounded-xl p-10 text-center bg-slate-50">
+            <i data-lucide="upload-cloud" class="w-10 h-10 text-blue-600 mx-auto mb-3"></i>
+            <p class="font-medium text-slate-700">Modular Tool Container Ready</p>
+            <p class="text-xs text-slate-500 mt-1">Tap below to test local RAM logging and compliance proof generation.</p>
+            <button onclick="simulateFileAction()" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
+              Simulate Local File Processing
+            </button>
+          </div>
+
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
+            <span>🔒 Processed locally in device memory. Never uploaded to any external server.</span>
+            <button onclick="openModal('securityModal')" class="text-slate-500 hover:text-blue-600 underline text-left sm:text-right">View Data Policy / Clear Memory</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR AD SLOT -->
+      <aside class="ad-container w-full lg:w-72 shrink-0">
+        <div class="ad-slot border border-dashed border-slate-300 rounded-xl p-5 h-72 flex flex-col items-center justify-center text-center text-xs text-slate-500 sticky top-24">
+          <span class="px-2 py-0.5 bg-slate-200 text-slate-600 rounded font-semibold uppercase text-[10px] mb-2">Sponsored Ad</span>
+          <p class="font-medium text-slate-700 mb-1">Sidebar Ad Unit (300x250)</p>
+          <p class="text-slate-400 mb-4">Google AdSense / Direct SME Sponsor Slot</p>
+          <button onclick="openModal('stripeModal')" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium shadow-sm">
+            Remove Ads — RM 25 Once
+          </button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-5 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>© 2026 <strong>MyBizTools.my</strong> — Malaysian Business & Document Utilities.</div>
+      <div class="flex items-center space-x-4">
+        <button onclick="openModal('securityModal')" class="hover:text-slate-900 underline">FAQ & Data Security</button>
+        <span>•</span>
+        <button onclick="openModal('stripeModal')" class="hover:text-slate-900">Restore Pro Pass</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: FAQ & DATA SECURITY -->
+  <div id="securityModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
+          <h3 class="font-bold text-slate-900">FAQ & Local Data Security</h3>
+        </div>
+        <button onclick="closeModal('securityModal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-4 text-xs text-slate-600 leading-relaxed">
+        <div>
+          <h4 class="font-semibold text-slate-900 text-sm">1. Where do my uploaded files go?</h4>
+          <p class="mt-1">Your files stay inside your device's local browser memory (RAM). Nothing is transmitted to an external cloud server.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-slate-900 text-sm">2. Temporary 30-Minute Session Cache</h4>
+          <p class="mt-1">Parsed sales tables stay in temporary browser session storage for 30 minutes so you can adjust SST or date parameters and regenerate reports without re-selecting your file.</p>
+        </div>
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold text-slate-800">Session Compliance Log</span>
+            <div class="space-x-2">
+              <button onclick="purgeSessionMemory()" class="text-rose-600 hover:underline font-medium">Clear Memory</button>
+              <span>|</span>
+              <button onclick="downloadPurgeCertificate()" class="text-blue-600 hover:underline font-medium">Download .TXT Proof</button>
+            </div>
+          </div>
+          <pre id="sessionAuditLog" class="bg-slate-900 text-emerald-400 p-2.5 rounded-lg text-[11px] font-mono overflow-x-auto max-h-28">[System Ready] Zero files currently held in browser session memory.</pre>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeModal('securityModal')" class="px-4 py-2 bg-slate-900 text-white text-xs font-medium rounded-lg">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: STRIPE MALAYSIA FPX CHECKOUT -->
+  <div id="stripeModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
+          <h3 class="font-bold text-slate-900">MyBizTools.my Ad-Free Pro Pass</h3>
+        </div>
+        <button onclick="closeModal('stripeModal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="py-4">
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center mb-4">
+          <span class="text-xs uppercase font-bold text-blue-700 tracking-wider">One-Time Payment • No Subscription</span>
+          <div class="text-3xl font-extrabold text-slate-900 mt-1">RM 25.00</div>
+          <p class="text-xs text-slate-600 mt-1">Pay once via FPX, GrabPay, or Card. Removes all ads forever.</p>
+        </div>
+        <button onclick="activateAdFreeMode()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm shadow-sm transition">
+          Pay RM 25.00 via Stripe Malaysia (FPX / Card)
+        </button>
+        <div class="mt-4 pt-4 border-t border-slate-100">
+          <label class="block text-xs font-medium text-slate-600 mb-1.5">Already purchased? Enter License Key:</label>
+          <div class="flex gap-2">
+            <input type="text" id="licenseInput" placeholder="e.g. MBT-PRO-2026" class="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-xs" />
+            <button onclick="activateAdFreeMode()" class="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium">Activate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULAR APPLICATION LOGIC -->
+  <script src="app.js"></script>
+</body>
+</html>
